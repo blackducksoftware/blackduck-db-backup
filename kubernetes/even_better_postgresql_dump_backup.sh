@@ -3,10 +3,10 @@
 # KUBERNETES compatible backup script.
 # requires to be run in an environment with working kubectl
 
-if [ "$2" = "" ]
+if [ "$3" = "" ]
 then
   echo
-  echo usage: $0 namespace targetDir [dbname] [prefix] [retainqty]
+  echo usage: $0 namespace targetDir dbname [prefix] [retainqty]
   echo
   exit 1
 fi
