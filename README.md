@@ -1,13 +1,7 @@
-# blackduck-db-backup
+# Overview
 
-Provides scheduled database backup allowing or retention of historical data without overusing storage space.
+Backup process for platforms that are not provided with means of database backup out of the box
 
-This procedure is applicable to HUB running postgres container.
+# Documentation
 
-Database dumps performed on six-hour, daily, weekly and monthly basis.
-
-Different backup types are staggered to ensure they do not start at the same time.
-
-Fixed number of each backup would be retained allowing recovery going back N six hour terms, N days, N weeks or N months.
-
-Setup consists of crontab entries and a backup script.
+Documentation for *blackduck-db-backup could be found here: https://github.com/blackducksoftware/blackduck-db-backup/wiki
