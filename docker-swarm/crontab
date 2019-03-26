@@ -1,4 +1,4 @@
-00 6,12,18,23 * * *   /data/scripts/better_postgresql_dump_backup.sh sixhour
+00 */6 * * *   /data/scripts/better_postgresql_dump_backup.sh sixhour
 00 3 * * *   /data/scripts/better_postgresql_dump_backup.sh daily
 00 1 * * 6   /data/scripts/better_postgresql_dump_backup.sh weekly
 00 2 1 * *   /data/scripts/better_postgresql_dump_backup.sh monthly
