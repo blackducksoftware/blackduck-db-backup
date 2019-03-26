@@ -31,7 +31,7 @@ then
     do
         dumpfile=${backup_dir}/${prefix}_${i}_${timestamp}.dump
         echo "Backup started at $(date +%Y%m%d_%H_%M_%S)  for ${i} database" >> $logfile
-        /bin/docker exec -i $container_id  pg_dump -U blackduck -Fc -f ${i}  >${dumpfile}
+        docker exec -i $container_id  pg_dump -U blackduck -Fc ${i}  >${dumpfile}
         if [ $? == 0 ]
         then
             echo -e "Backup completed at $(date +%Y%m%d_%H_%M_%S) for bds_hub database \n" >> $logfile
