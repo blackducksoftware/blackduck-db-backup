@@ -6,7 +6,7 @@
 if [ "$3" = "" ]
 then
   echo
-  echo usage: $0 namespace targetDir dbname [prefix] [retainqty]
+  echo usage: $0 namespace targetDir dbname [prefix] [retainqty] [globals]
   echo
   exit 1
 fi
@@ -55,11 +55,17 @@ container_id=$(kubectl get pods -n $namespace | awk '/postgres/ {print $1}')
 
 if [ $container_id != "" ]
 then
+    if [[ "$6" == "globals" ]]
+    then
+         globalsFile=$targetDir/${prefix}_globals_${timestamp}.sql
+		 echo "Processing globals into $globalsFile " >>$logfile
+		 kubectl exec -i -n $namespace $container_id -- pg_dumpall -g >$globalsFile
+    fi
 	for i in $dblist
 	do
           dumpfile=$targetDir/${prefix}_${i}_${timestamp}.dump
         	echo "Backup $i database into $dumpfile" >> $logfile
-        	kubectl exec -i -n $namespace $container_id -- /usr/local/bin/pg_dump -Fc $i  > $dumpfile
+        	kubectl exec -i -n $namespace $container_id -- pg_dump -Fc $i  > $dumpfile
 
         	if [ $? == 0 ]
         	then
@@ -74,6 +80,12 @@ then
 		if [ $dumpcount -gt $retainqty ]
 		then
         		rm $(ls -r ${dumpfilepattern}* | tail -n $(( $dumpcount - $retainqty )) )
+		fi
+    globalsfilepattern=$targetDir/${prefix}_globals_[0-9]
+		globalscount=$(ls ${globalsfilepattern}* | wc -l)
+		if [ $globalscount -gt $retainqty ]
+		then
+        		rm $(ls -r ${globalsfilepattern}* | tail -n $(( $globalscount - $retainqty )) )
 		fi
 	done
 else
